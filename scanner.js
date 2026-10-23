@@ -1,5 +1,5 @@
 // Ganti tautan di bawah ini dengan URL Web App dari Google Apps Script Anda
-const API_URL = "https://script.googleusercontent.com/a/macros/hikmahuniversity.ac.id/echo?user_content_key=AUkAhnRXE8CYokQIXVJPMIiKulq6wA1iKuz_5Obp1vFSWyegw2dhKPun7zPHwr0t179j3WM0c3aKeEahQLMNfBmqvYFnHKhy6Gf2yRO3SNytXBbBvgk0lyEC6Qack-J4XPWfgHe5sLRJaTqqJtNZkbK_qk529JQcYw9b9kYeM6LSsImKdFOwwLqtkGNgwsv25tgOJz-k90SoXMMjPvRH2HwEZlzm1G7jh4uRSALcZLbUpnLDNAYG-hHyZCrnlgu46fYHhv5bBloSVCDds1ko9olSBfxGhlJmR3cc-H2k_juhkrhz9yVRMpXfVtX5u1r60w&lib=MPcaUPQ2SMA6xqXuh1xK6W3vfmDgUTCal";
+const API_URL = "https://script.google.com/macros/s/AKfycbxELFCp39E4seT_44DtaDomemP7j2D8viRZF68wUk5Jn89pDHUCwKyZYGdQcQAtsuYr/exec";
 
 let isProcessing = false;
 
