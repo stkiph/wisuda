@@ -96,6 +96,17 @@ function drawCharts(sudahHadir, belumHadir, vipHadir, regulerHadir) {
 
   if (!ctx1 || !ctx2 || typeof Chart === 'undefined') return;
 
+  // Hitung persentase kehadiran
+  const total = sudahHadir + belumHadir;
+  const persentase = total > 0 ? Math.round((sudahHadir / total) * 100) : 0;
+  
+  // Tampilkan angka persentase ke elemen HTML di tengah chart
+  const elPersen = document.getElementById('persenKehadiranText');
+  if (elPersen) {
+    elPersen.innerText = persentase + '%';
+  }
+
+  // Chart 1: Donut Chart Persentase
   if (chart1) chart1.destroy();
   chart1 = new Chart(ctx1, {
     type: 'doughnut',
@@ -108,9 +119,51 @@ function drawCharts(sudahHadir, belumHadir, vipHadir, regulerHadir) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      cutout: '70%', // Membuat lubang tengah doughnut lebih pas untuk teks
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const val = context.raw || 0;
+              const pct = total > 0 ? Math.round((val / total) * 100) : 0;
+              return ` ${context.label}: ${val} orang (${pct}%)`;
+            }
+          }
+        }
+      }
     }
   });
+
+  // Chart 2: Pie Chart Kategori
+  if (chart2) chart2.destroy();
+  const totalVipReg = vipHadir + regulerHadir;
+  chart2 = new Chart(ctx2, {
+    type: 'pie',
+    data: {
+      labels: ['VIP Hadir', 'Reguler Hadir'],
+      datasets: [{
+        data: [vipHadir, regulerHadir],
+        backgroundColor: ['#a855f7', '#3b82f6']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const val = context.raw || 0;
+              const pct = totalVipReg > 0 ? Math.round((val / totalVipReg) * 100) : 0;
+              return ` ${context.label}: ${val} orang (${pct}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
 
   if (chart2) chart2.destroy();
   chart2 = new Chart(ctx2, {
