@@ -38,15 +38,22 @@
       </div>
     </div>
 
-    <!-- Bagian Grafik / Diagram (Di atas) -->
+   <!-- Bagian Grafik / Diagram -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <!-- Diagram 1: Persentase Kehadiran overall -->
       <div class="bg-white p-5 rounded-lg shadow flex flex-col items-center">
         <h2 class="text-lg font-bold mb-4 text-gray-700">Persentase Kehadiran Total</h2>
-        <div class="w-64 h-64">
+        <div class="w-full h-64 relative flex items-center justify-center">
           <canvas id="chartKehadiran"></canvas>
         </div>
       </div>
+
+      <div class="bg-white p-5 rounded-lg shadow flex flex-col items-center">
+        <h2 class="text-lg font-bold mb-4 text-gray-700">Kedatangan Tamu VIP vs Reguler</h2>
+        <div class="w-full h-64 relative flex items-center justify-center">
+          <canvas id="chartKategori"></canvas>
+        </div>
+      </div>
+    </div>
 
       <!-- Diagram 2: Kehadiran Berdasarkan Kategori (VIP vs Reguler) -->
       <div class="bg-white p-5 rounded-lg shadow flex flex-col items-center">
