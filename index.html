@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Kehadiran Wisuda</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Library Chart.js untuk Grafik/Diagram -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart.js UMD Bundle (Pasti Jalan) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body class="bg-gray-100 p-6">
   <div class="max-w-6xl mx-auto">
@@ -18,7 +18,7 @@
       </a>
     </div>
     
-    <!-- Ringkasan Angka (4 Kartu) -->
+    <!-- Ringkasan Angka -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
         <p class="text-gray-500 text-sm font-semibold">Total Undangan</p>
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-   <!-- Bagian Grafik / Diagram -->
+    <!-- Bagian Grafik -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
       <div class="bg-white p-5 rounded-lg shadow flex flex-col items-center">
         <h2 class="text-lg font-bold mb-4 text-gray-700">Persentase Kehadiran Total</h2>
@@ -55,16 +55,7 @@
       </div>
     </div>
 
-      <!-- Diagram 2: Kehadiran Berdasarkan Kategori (VIP vs Reguler) -->
-      <div class="bg-white p-5 rounded-lg shadow flex flex-col items-center">
-        <h2 class="text-lg font-bold mb-4 text-gray-700">Kedatangan Tamu VIP vs Reguler</h2>
-        <div class="w-64 h-64">
-          <canvas id="chartKategori"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tabel Monitoring Kehadiran (Di Paling Bawah) -->
+    <!-- Tabel Monitoring Kehadiran -->
     <div class="bg-white rounded-lg shadow p-4">
       <h2 class="text-xl font-bold mb-4 text-gray-700">Daftar Detail Tamu & Status Kehadiran</h2>
       <div class="overflow-x-auto max-h-96">
