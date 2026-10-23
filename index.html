@@ -5,12 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Kehadiran Wisuda</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Library Chart.js untuk Grafik/Diagram -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 p-6">
   <div class="max-w-6xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Dashboard Kehadiran Wisuda</h1>
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">Dashboard Kehadiran Wisuda</h1>
+      <a href="scanner.html" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow transition">
+        📷 Buka Scanner
+      </a>
+    </div>
     
-    <!-- Kartu Ringkasan Statistik -->
+    <!-- Ringkasan Angka (4 Kartu) -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
         <p class="text-gray-500 text-sm font-semibold">Total Undangan</p>
@@ -30,13 +38,32 @@
       </div>
     </div>
 
-    <!-- Tabel Monitoring Kehadiran -->
+    <!-- Bagian Grafik / Diagram (Di atas) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <!-- Diagram 1: Persentase Kehadiran overall -->
+      <div class="bg-white p-5 rounded-lg shadow flex flex-col items-center">
+        <h2 class="text-lg font-bold mb-4 text-gray-700">Persentase Kehadiran Total</h2>
+        <div class="w-64 h-64">
+          <canvas id="chartKehadiran"></canvas>
+        </div>
+      </div>
+
+      <!-- Diagram 2: Kehadiran Berdasarkan Kategori (VIP vs Reguler) -->
+      <div class="bg-white p-5 rounded-lg shadow flex flex-col items-center">
+        <h2 class="text-lg font-bold mb-4 text-gray-700">Kedatangan Tamu VIP vs Reguler</h2>
+        <div class="w-64 h-64">
+          <canvas id="chartKategori"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabel Monitoring Kehadiran (Di Paling Bawah) -->
     <div class="bg-white rounded-lg shadow p-4">
-      <h2 class="text-xl font-bold mb-4 text-gray-700">Daftar Tamu & Status Kehadiran</h2>
-      <div class="overflow-x-auto">
+      <h2 class="text-xl font-bold mb-4 text-gray-700">Daftar Detail Tamu & Status Kehadiran</h2>
+      <div class="overflow-x-auto max-h-96">
         <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="bg-gray-100 border-b">
+          <thead class="sticky top-0 bg-gray-100">
+            <tr class="border-b">
               <th class="p-3 text-sm font-bold text-gray-600">ID</th>
               <th class="p-3 text-sm font-bold text-gray-600">Nama</th>
               <th class="p-3 text-sm font-bold text-gray-600">Kategori</th>
