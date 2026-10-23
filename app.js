@@ -1,4 +1,4 @@
-const API_URL = "URL_WEB_APP_ANDA_DI_SINI";
+const API_URL = "https://script.google.com/macros/s/AKfycbxELFCp39E4seT_44DtaDomemP7j2D8viRZF68wUk5Jn89pDHUCwKyZYGdQcQAtsuYr/exec";
 
 let chart1 = null;
 let chart2 = null;
