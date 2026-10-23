@@ -1,5 +1,8 @@
 // Ganti tautan di bawah ini dengan URL Web App dari Google Apps Script Anda
-const API_URL = "https://script.google.com/macros/s/AKfycbxELFCp39E4seT_44DtaDomemP7j2D8viRZF68wUk5Jn89pDHUCwKyZYGdQcQAtsuYr/exec";
+const API_URL = "URL_WEB_APP_ANDA_DI_SINI";
+
+let chartKehadiranInstance = null;
+let chartKategoriInstance = null;
 
 async function loadDashboardData() {
   try {
@@ -10,15 +13,21 @@ async function loadDashboardData() {
     const totalTamu = data.length;
     const totalKonfirmasi = data.filter(row => row.Konfirmasi_RSVP === "Hadir").length;
     const totalHadir = data.filter(row => row.Status_Kehadiran === "Hadir").length;
-    const totalVipHadir = data.filter(row => row.Kategori === "VIP" && row.Status_Kehadiran === "Hadir").length;
+    const totalBelumHadir = totalTamu - totalHadir;
 
-    // Tampilkan di Ringkasan Kartu
+    const vipHadir = data.filter(row => row.Kategori === "VIP" && row.Status_Kehadiran === "Hadir").length;
+    const regulerHadir = data.filter(row => row.Kategori === "Reguler" && row.Status_Kehadiran === "Hadir").length;
+
+    // Tampilkan Ringkasan Kartu
     document.getElementById("totalTamu").innerText = totalTamu;
     document.getElementById("totalKonfirmasi").innerText = totalKonfirmasi;
     document.getElementById("totalHadir").innerText = totalHadir;
-    document.getElementById("totalVipHadir").innerText = totalVipHadir;
+    document.getElementById("totalVipHadir").innerText = vipHadir;
 
-    // Render Tabel
+    // Render / Update Diagram
+    renderCharts(totalHadir, totalBelumHadir, vipHadir, regulerHadir);
+
+    // Render Tabel (Di Paling Bawah)
     const tbody = document.getElementById("tabelDataTamu");
     tbody.innerHTML = "";
 
@@ -50,8 +59,38 @@ async function loadDashboardData() {
   }
 }
 
-// Jalankan saat pertama kali dibuka
-loadDashboardData();
+function renderCharts(sudahHadir, belumHadir, vipHadir, regulerHadir) {
+  // Chart 1: Donut Chart Kehadiran Overall
+  const ctx1 = document.getElementById('chartKehadiran').getContext('2d');
+  if (chartKehadiranInstance) chartKehadiranInstance.destroy();
+  chartKehadiranInstance = new Chart(ctx1, {
+    type: 'doughnut',
+    data: {
+      labels: ['Sudah Hadir', 'Belum Datang'],
+      datasets: [{
+        data: [sudahHadir, belumHadir],
+        backgroundColor: ['#22c55e', '#e5e7eb']
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
 
-// Opsi: Refresh otomatis data setiap 10 detik
+  // Chart 2: Pie Chart VIP vs Reguler
+  const ctx2 = document.getElementById('chartKategori').getContext('2d');
+  if (chartKategoriInstance) chartKategoriInstance.destroy();
+  chartKategoriInstance = new Chart(ctx2, {
+    type: 'pie',
+    data: {
+      labels: ['VIP Hadir', 'Reguler Hadir'],
+      datasets: [{
+        data: [vipHadir, regulerHadir],
+        backgroundColor: ['#a855f7', '#3b82f6']
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+}
+
+// Jalankan pertama kali & auto-refresh tiap 10 detik
+loadDashboardData();
 setInterval(loadDashboardData, 10000);
