@@ -21,9 +21,13 @@ function onScanSuccess(decodedText, decodedResult) {
   resultKategori.innerText = "";
 
   // Kirim ID Tamu dari hasil Scan ke Google Apps Script
+// Kirim ID Tamu dari hasil Scan ke Google Apps Script
   fetch(API_URL, {
     method: "POST",
-    headers: { "Content-Type": "text/plain" },
+    mode: "cors",
+    headers: { 
+      "Content-Type": "text/plain;charset=utf-8" 
+    },
     body: JSON.stringify({ id_tamu: decodedText })
   })
   .then(res => res.json())
