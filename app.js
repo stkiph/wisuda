@@ -8,6 +8,11 @@ async function loadDashboardData() {
     const response = await fetch(API_URL);
     const data = await response.json();
 
+    if (!Array.isArray(data)) {
+      console.error("Format data yang diterima bukan array:", data);
+      return;
+    }
+
     let totalTamu = data.length;
     let totalKonfirmasi = 0;
     let totalHadir = 0;
@@ -15,16 +20,22 @@ async function loadDashboardData() {
     let regulerHadir = 0;
 
     const tbody = document.getElementById("tabelDataTamu");
-    tbody.innerHTML = "";
+    if (tbody) tbody.innerHTML = "";
 
     data.forEach(tamu => {
-      // Pembacaan properti fleksibel
-      const id = tamu.ID_Tamu || tamu.id_tamu || '-';
-      const nama = tamu.Nama || tamu.nama || '-';
-      const kategori = tamu.Kategori || tamu.kategori || 'Reguler';
-      const rsvp = tamu.Konfirmasi_RSVP || tamu.konfirmasi_rsvp || '-';
-      const statusHadir = tamu.Status_Kehadiran || tamu.status_kehadiran || 'Belum Datang';
-      const waktuCheckin = tamu.Waktu_Checkin || tamu.waktu_checkin || '-';
+      // Pembacaan kunci object yang fleksibel
+      const keys = Object.keys(tamu);
+      const getKeyVal = (target) => {
+        const foundKey = keys.find(k => k.trim().toLowerCase() === target.toLowerCase());
+        return foundKey ? tamu[foundKey] : '';
+      };
+
+      const id = getKeyVal("ID_Tamu") || getKeyVal("id_tamu") || '-';
+      const nama = getKeyVal("Nama") || getKeyVal("nama") || '-';
+      const kategori = getKeyVal("Kategori") || getKeyVal("kategori") || 'Reguler';
+      const rsvp = getKeyVal("Konfirmasi_RSVP") || getKeyVal("konfirmasi_rsvp") || '-';
+      const statusHadir = getKeyVal("Status_Kehadiran") || getKeyVal("status_kehadiran") || 'Belum Datang';
+      const waktuCheckin = getKeyVal("Waktu_Checkin") || getKeyVal("waktu_checkin") || '-';
 
       const isHadir = String(statusHadir).trim().toLowerCase() === "hadir";
       const isVip = String(kategori).trim().toUpperCase() === "VIP";
@@ -36,36 +47,42 @@ async function loadDashboardData() {
         else regulerHadir++;
       }
 
-      // Render Baris Tabel
-      const tr = document.createElement("tr");
-      tr.className = "border-b hover:bg-gray-50";
+      if (tbody) {
+        const tr = document.createElement("tr");
+        tr.className = "border-b hover:bg-gray-50";
 
-      const statusBadge = isHadir 
-        ? `<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-semibold">Hadir</span>`
-        : `<span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">Belum Datang</span>`;
+        const statusBadge = isHadir 
+          ? `<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-semibold">Hadir</span>`
+          : `<span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">Belum Datang</span>`;
 
-      const kategoriBadge = isVip
-        ? `<span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-bold">VIP</span>`
-        : `<span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">Reguler</span>`;
+        const kategoriBadge = isVip
+          ? `<span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-bold">VIP</span>`
+          : `<span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">Reguler</span>`;
 
-      tr.innerHTML = `
-        <td class="p-3 text-sm font-mono">${id}</td>
-        <td class="p-3 text-sm font-semibold text-gray-800">${nama}</td>
-        <td class="p-3 text-sm">${kategoriBadge}</td>
-        <td class="p-3 text-sm">${rsvp}</td>
-        <td class="p-3 text-sm">${statusBadge}</td>
-        <td class="p-3 text-sm text-gray-500 font-mono">${waktuCheckin}</td>
-      `;
-      tbody.appendChild(tr);
+        tr.innerHTML = `
+          <td class="p-3 text-sm font-mono">${id}</td>
+          <td class="p-3 text-sm font-semibold text-gray-800">${nama}</td>
+          <td class="p-3 text-sm">${kategoriBadge}</td>
+          <td class="p-3 text-sm">${rsvp}</td>
+          <td class="p-3 text-sm">${statusBadge}</td>
+          <td class="p-3 text-sm text-gray-500 font-mono">${waktuCheckin}</td>
+        `;
+        tbody.appendChild(tr);
+      }
     });
 
-    // Ringkasan Kartu
-    document.getElementById("totalTamu").innerText = totalTamu;
-    document.getElementById("totalKonfirmasi").innerText = totalKonfirmasi;
-    document.getElementById("totalHadir").innerText = totalHadir;
-    document.getElementById("totalVipHadir").innerText = vipHadir;
+    // Update Angka Ringkasan
+    const elTotalTamu = document.getElementById("totalTamu");
+    const elTotalKonfirmasi = document.getElementById("totalKonfirmasi");
+    const elTotalHadir = document.getElementById("totalHadir");
+    const elTotalVipHadir = document.getElementById("totalVipHadir");
 
-    // Render Chart
+    if (elTotalTamu) elTotalTamu.innerText = totalTamu;
+    if (elTotalKonfirmasi) elTotalKonfirmasi.innerText = totalKonfirmasi;
+    if (elTotalHadir) elTotalHadir.innerText = totalHadir;
+    if (elTotalVipHadir) elTotalVipHadir.innerText = vipHadir;
+
+    // Render Diagram
     drawCharts(totalHadir, (totalTamu - totalHadir), vipHadir, regulerHadir);
 
   } catch (error) {
@@ -77,7 +94,7 @@ function drawCharts(sudahHadir, belumHadir, vipHadir, regulerHadir) {
   const ctx1 = document.getElementById('chartKehadiran');
   const ctx2 = document.getElementById('chartKategori');
 
-  if (!ctx1 || !ctx2) return;
+  if (!ctx1 || !ctx2 || typeof Chart === 'undefined') return;
 
   if (chart1) chart1.destroy();
   chart1 = new Chart(ctx1, {
