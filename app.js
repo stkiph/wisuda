@@ -1,5 +1,5 @@
 // Ganti tautan di bawah ini dengan URL Web App dari Google Apps Script Anda
-const API_URL = "URL_WEB_APP_ANDA_DI_SINI";
+const API_URL = "https://script.google.com/macros/s/AKfycbxELFCp39E4seT_44DtaDomemP7j2D8viRZF68wUk5Jn89pDHUCwKyZYGdQcQAtsuYr/exec";
 
 let chartKehadiranInstance = null;
 let chartKategoriInstance = null;
