@@ -49,9 +49,14 @@
 
       <div class="bg-white p-5 rounded-lg shadow flex flex-col items-center">
         <h2 class="text-lg font-bold mb-4 text-gray-700">Kedatangan Tamu VIP vs Reguler</h2>
-        <div class="w-full h-64 relative flex items-center justify-center">
-          <canvas id="chartKategori"></canvas>
-        </div>
+       <div class="w-full h-64 relative flex flex-col items-center justify-center">
+  <canvas id="chartKehadiran"></canvas>
+  <!-- Elemen Teks Persentase di Tengah Donut Chart -->
+  <div class="absolute flex flex-col items-center justify-center pointer-events-none">
+    <span id="persenKehadiranText" class="text-3xl font-extrabold text-green-600">0%</span>
+    <span class="text-xs text-gray-400 font-medium">Telah Hadir</span>
+  </div>
+</div>
       </div>
     </div>
 
