@@ -60,10 +60,13 @@ async function loadDashboardData() {
 }
 
 function renderCharts(sudahHadir, belumHadir, vipHadir, regulerHadir) {
-  // Chart 1: Donut Chart Kehadiran Overall
-  const ctx1 = document.getElementById('chartKehadiran').getContext('2d');
+  const elChart1 = document.getElementById('chartKehadiran');
+  const elChart2 = document.getElementById('chartKategori');
+
+  if (!elChart1 || !elChart2) return;
+
   if (chartKehadiranInstance) chartKehadiranInstance.destroy();
-  chartKehadiranInstance = new Chart(ctx1, {
+  chartKehadiranInstance = new Chart(elChart1.getContext('2d'), {
     type: 'doughnut',
     data: {
       labels: ['Sudah Hadir', 'Belum Datang'],
@@ -75,10 +78,8 @@ function renderCharts(sudahHadir, belumHadir, vipHadir, regulerHadir) {
     options: { responsive: true, maintainAspectRatio: false }
   });
 
-  // Chart 2: Pie Chart VIP vs Reguler
-  const ctx2 = document.getElementById('chartKategori').getContext('2d');
   if (chartKategoriInstance) chartKategoriInstance.destroy();
-  chartKategoriInstance = new Chart(ctx2, {
+  chartKategoriInstance = new Chart(elChart2.getContext('2d'), {
     type: 'pie',
     data: {
       labels: ['VIP Hadir', 'Reguler Hadir'],
