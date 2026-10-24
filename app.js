@@ -89,7 +89,37 @@ async function loadDashboardData() {
     console.error("Gagal mengambil data:", error);
   }
 }
+// Variable untuk menyimpan ID VVIP yang sudah disambut agar tidak muncul terus saat auto-refresh
+let lastWelcomedId = "";
 
+// Tambahkan logika ini di dalam loop data.forEach pada loadDashboardData():
+const urlFoto = getKeyVal("URL_Foto") || getKeyVal("url_foto") || "https://via.placeholder.com/150";
+const jabatan = getKeyVal("Jabatan") || getKeyVal("jabatan") || ""; // Opsional jika ada kolom Jabatan
+
+// Jika Tamu VVIP/VIP dan baru saja Check-in
+if (isVip && isHadir && id !== lastWelcomedId) {
+  showVipWelcome(nama, jabatan, urlFoto);
+  lastWelcomedId = id; // Simpan ID agar popup hanya muncul sekali
+}
+
+// Fungsi untuk Memunculkan & Menutup Banner
+function showVipWelcome(nama, jabatan, foto) {
+  document.getElementById("vipNama").innerText = nama;
+  document.getElementById("vipJabatan").innerText = jabatan || "Tamu Kehormatan";
+  document.getElementById("vipFoto").src = foto;
+  
+  const banner = document.getElementById("welcomeBanner");
+  banner.classList.remove("hidden");
+
+  // Otomatis menutup banner setelah 7 detik
+  setTimeout(() => {
+    closeWelcome();
+  }, 7000);
+}
+
+function closeWelcome() {
+  document.getElementById("welcomeBanner").classList.add("hidden");
+}
 function drawCharts(sudahHadir, belumHadir, vipHadir, regulerHadir) {
   const ctx1 = document.getElementById('chartKehadiran');
   const ctx2 = document.getElementById('chartKategori');
