@@ -8,6 +8,21 @@
   <!-- Chart.js UMD Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
+  <!-- Banner Popup Selamat Datang Tamu VVIP -->
+<div id="welcomeBanner" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 animate-fade-in">
+  <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center border-4 border-yellow-400 relative">
+    <button onclick="closeWelcome()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+    <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">Tamu Kehormatan</span>
+    
+    <!-- Foto Tamu -->
+    <img id="vipFoto" src="" alt="Foto Tamu" class="w-32 h-32 rounded-full object-cover mx-auto my-4 border-4 border-indigo-500 shadow-md">
+    
+    <!-- Ucapan & Nama -->
+    <h3 class="text-gray-500 font-medium text-sm">Selamat Datang</h3>
+    <h2 id="vipNama" class="text-2xl font-extrabold text-gray-900 mt-1">Bapak Hadi Suwarno</h2>
+    <p id="vipJabatan" class="text-indigo-600 font-semibold text-sm mt-1">Kepala Sekolah SD Al Hikmah Surabaya</p>
+  </div>
+</div>
 <body class="bg-gray-100 p-6">
   <div class="max-w-6xl mx-auto">
     <!-- Header -->
